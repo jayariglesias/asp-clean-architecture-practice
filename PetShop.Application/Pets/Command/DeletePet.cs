@@ -36,6 +36,10 @@ namespace PetShop.Application.Pets.Queries
 
         public async Task<Response<object>> Handle(DeletePetCommand request, CancellationToken cancellationToken)
         {
+            var verify = _context.Visits.FirstOrDefault(x => x.PetId == request.PetId);
+            if (verify == null) return await Task.FromResult(new Response<object>(Message.Value("Failed! Pet is already in used in visit.")));
+
+
             var data = _context.Pets.FirstOrDefault(x => x.PetId == request.PetId);
             if (data != null)
             {
