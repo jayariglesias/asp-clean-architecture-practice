@@ -47,17 +47,17 @@ namespace PetShop.Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<Response<object>> AddUser(UserRequest user)
+        public async Task<Response<object>> AddUser(UserRequest e)
         {
-            var command = new CreateUserCommand(user);
+            var command = new CreateUserCommand(e);
             var result = await Mediator.Send(command);
             return result;
         }
 
         [HttpPut("update")]
-        public async Task<Response<object>> UpdateUser(UserRequest user)
+        public async Task<Response<object>> UpdateUser(UserRequest e)
         {
-            var command = new UpdateUserCommand(user);
+            var command = new UpdateUserCommand(e);
             var result = await Mediator.Send(command);
             return result;
         }
