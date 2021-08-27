@@ -195,8 +195,8 @@
                  "visitfrom": date,
                  "visitto": date,
                  "firstname": "owner",
-                 "middlename" = "owner",
-                 "lastname" = "owner"
+                 "middlename": "owner",
+                 "lastname": "owner"
               }
               </br></br>
               For range between dates, use this
