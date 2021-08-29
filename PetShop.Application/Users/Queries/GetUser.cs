@@ -39,7 +39,7 @@ namespace PetShop.Application.Users.Queries
             if (data == null)
                 return await Task.FromResult(new Response<User>(Message.NotFound("User")));
             else
-                return await Task.FromResult(new Response<User>(Message.Success()));
+                return await Task.FromResult(new Response<User>(data,Message.Success()));
         }
 
     }
