@@ -11,7 +11,7 @@ namespace PetShop.Application.Common.Validator
 {
     public class Token
     {
-        public static string Generate(User user, IConfiguration _config)
+        public static string Generate(User user, IConfiguration _config, int minutes = 30)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -25,7 +25,7 @@ namespace PetShop.Application.Common.Validator
                issuer: _config["Jwt:Issuer"],
                audience: _config["Jwt:Issuer"],
                claims,
-               expires: DateTime.Now.AddDays(300),
+               expires: DateTime.Now.AddMinutes(minutes),
                signingCredentials: credentials
            );
 
