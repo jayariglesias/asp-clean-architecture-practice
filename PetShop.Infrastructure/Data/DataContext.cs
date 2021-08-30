@@ -19,5 +19,23 @@ namespace PetShop.Infrastructure.Data
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Visit> Visits { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("PetShop");
+
+            modelBuilder.Entity<Pet>()
+                .HasOne(pet => pet.User)
+                .WithMany(user => user.Pets)
+                .HasForeignKey(pet => pet.UserId)
+                .HasPrincipalKey(user => user.UserId);
+
+            modelBuilder.Entity<Visit>()
+                .HasOne(visit => visit.Pet)
+                .WithMany(pet => pet.Visits)
+                .HasForeignKey(visit => visit.PetId)
+                .HasPrincipalKey(pet => pet.PetId);
+
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace PetShop.Application.Pets.Command
             if(!Validate.String(request.Breed)) return await Task.FromResult(new Response<object>(Message.FailedString("Breed")));
 
             var verify = _context.Users.FirstOrDefault(x => x.UserId == request.UserId);
-            if (verify == null) return await Task.FromResult(new Response<object>(Message.Value("Pet not registered yet.")));
+            if (verify == null) return await Task.FromResult(new Response<object>(Message.Value("User not registered yet.")));
 
             var data = new Pet
             {
