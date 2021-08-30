@@ -23,5 +23,8 @@ namespace PetShop.Domain.Entities
         [Required]
         public string Breed { get; set; }
         public DateTime Birthdate { get; set; }
+
+        public User User { get; set; }
+        public List<Visit> Visits { get; set; }
     }
 }

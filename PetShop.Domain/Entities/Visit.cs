@@ -15,9 +15,6 @@ namespace PetShop.Domain.Entities
         public int PetId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-
-        [Required]
         public int VisitType { get; set; }
 
         [Required]
@@ -25,5 +22,7 @@ namespace PetShop.Domain.Entities
 
         [Required]
         public string Notes { get; set; }
+
+        public Pet Pet { get; set; }
     }
 }
