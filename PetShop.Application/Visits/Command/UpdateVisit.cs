@@ -54,7 +54,7 @@ namespace PetShop.Application.Visits.Command
                 if (data.VisitId != 0)
                     return await Task.FromResult(new Response<object>(data, Message.Success()));
                 else
-                    return await Task.FromResult(new Response<object>(data, Message.Value("Failed to update data!")));
+                    return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
         }
       
     }

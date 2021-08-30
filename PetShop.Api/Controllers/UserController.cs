@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PetShop.Application.Common.DTO;
@@ -14,8 +15,7 @@ using PetShop.Infrastructure.Data;
 
 namespace PetShop.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Authorize]
     public class UserController : ApiController
     {
         public UserController()

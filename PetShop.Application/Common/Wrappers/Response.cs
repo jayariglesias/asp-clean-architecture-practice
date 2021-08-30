@@ -24,6 +24,5 @@ namespace PetShop.Application.Common.Wrappers
         public string Message { get; set; }
         public List<string> Errors { get; set; }
         public T Data { get; set; }
-
     }
 }

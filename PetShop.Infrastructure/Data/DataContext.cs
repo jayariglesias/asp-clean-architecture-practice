@@ -10,7 +10,6 @@ namespace PetShop.Infrastructure.Data
     public class DataContext : DbContext, IDataContext
     {
         // private readonly IDatetime _dateTime;
-
         public DataContext(DbContextOptions options) : base(options)
         {
         }

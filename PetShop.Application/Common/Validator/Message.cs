@@ -6,8 +6,6 @@ namespace PetShop.Application.Common.Validator
 {
     public class Message
     {
-
-      
         public static string Welcome()
         {
             return "Welcome to PetShop";

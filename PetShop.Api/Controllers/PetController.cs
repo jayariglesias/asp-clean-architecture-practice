@@ -11,13 +11,11 @@ using PetShop.Application.Common.Validator;
 using PetShop.Application.Common.DTO;
 using PetShop.Application.Pets.Queries;
 using PetShop.Application.Pets.Command;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PetShop.Api.Controllers
 {
-
-    [Route("api/[controller]")]
-    [ApiController]
-
+    [Authorize]
     public class PetController : ApiController
     {
         

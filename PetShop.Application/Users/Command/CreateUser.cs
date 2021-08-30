@@ -66,7 +66,7 @@ namespace PetShop.Application.Users.Command
             if (data.UserId != 0)
                 return await Task.FromResult(new Response<object>(data, Message.Success()));
             else
-                return await Task.FromResult(new Response<object>(data, Message.Value("Failed to save data!")));
+                return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
         }
     }
 }

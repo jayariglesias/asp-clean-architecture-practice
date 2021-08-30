@@ -14,11 +14,12 @@ namespace PetShop.Application.Users.Queries
 {
     public class SearchUserQuery : IRequest<Response<object>>
     {
-        public SearchUserQuery(UserRequest e)
-        {
-            FirstName = e.FirstName;
-            LastName = e.LastName;
-        }
+   
+    public SearchUserQuery(UserRequest e)
+    {
+        FirstName = e.FirstName;
+        LastName = e.LastName;
+    }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -34,14 +35,12 @@ namespace PetShop.Application.Users.Queries
 
         public async Task<Response<object>> Handle(SearchUserQuery request, CancellationToken cancellationToken)
         {
-            if (!Validate.String(request.FirstName))
-                return await Task.FromResult(new Response<object>(Message.FailedString("First name")));
-            if (!Validate.String(request.LastName))
-                return await Task.FromResult(new Response<object>(Message.FailedString("Last name")));
+            if (!Validate.String(request.FirstName)) return await Task.FromResult(new Response<object>(Message.FailedString("First name")));
+            if (!Validate.String(request.LastName)) return await Task.FromResult(new Response<object>(Message.FailedString("Last name")));
            
             var data = _context.Users.FirstOrDefault(x => 
-                x.FirstName.ToLower() == request.FirstName.ToLower() && 
-                x.LastName.ToLower() == request.LastName.ToLower()
+                x.FirstName.ToLower().Contains(request.FirstName.ToLower()) && 
+                x.LastName.ToLower().Contains(request.LastName.ToLower())
             );
 
             if (data == null) 
