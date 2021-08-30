@@ -15,6 +15,7 @@ namespace PetShop.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("PetShop")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
@@ -44,6 +45,8 @@ namespace PetShop.Api.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("PetId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Pets");
                 });
@@ -103,9 +106,6 @@ namespace PetShop.Api.Migrations
                     b.Property<int>("PetId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("VisitDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -114,7 +114,27 @@ namespace PetShop.Api.Migrations
 
                     b.HasKey("VisitId");
 
+                    b.HasIndex("PetId");
+
                     b.ToTable("Visits");
+                });
+
+            modelBuilder.Entity("PetShop.Domain.Entities.Pet", b =>
+                {
+                    b.HasOne("PetShop.Domain.Entities.User", "User")
+                        .WithMany("Pets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetShop.Domain.Entities.Visit", b =>
+                {
+                    b.HasOne("PetShop.Domain.Entities.Pet", "Pet")
+                        .WithMany("Visits")
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
