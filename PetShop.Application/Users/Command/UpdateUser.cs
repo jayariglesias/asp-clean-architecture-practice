@@ -46,6 +46,8 @@ namespace PetShop.Application.Users.Command
         public async Task<Response<object>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
 
+            if (!Validate.Int(request.UserId)) return await Task.FromResult(new Response<object>(Message.FailedInt("User id")));
+
             var data = _context.Users.FirstOrDefault(x => x.UserId == request.UserId);
             if (data == null)
                 return await Task.FromResult(new Response<object>(Message.NotFound("User")));
@@ -60,12 +62,13 @@ namespace PetShop.Application.Users.Command
                 _context.Users.Update(data);
                 _context.SaveChanges();
 
-                if (data.UserId != 0)
-                    return await Task.FromResult(new Response<object>(data, Message.Success()));
-                else
-                    return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+            if (data.UserId == 0)
+                return await Task.FromResult(new Response<object>(Message.Custom("Failed to update data!")));
+            else
+                return await Task.FromResult(new Response<object>(data, Message.Success()));
+
         }
 
-       
+
     }
 }

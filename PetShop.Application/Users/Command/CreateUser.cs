@@ -50,6 +50,17 @@ namespace PetShop.Application.Users.Command
             if(!Validate.String(request.Username)) return await Task.FromResult(new Response<object>(Message.FailedString("Username")));
             if(!Validate.String(request.Password)) return await Task.FromResult(new Response<object>(Message.FailedString("Password")));
 
+            var checkUser = _context.Users.FirstOrDefault(u => 
+                u.Username.ToLower() == request.Username.ToLower() ||
+                u.Email.ToLower() == request.Email.ToLower()
+            );
+
+            if(checkUser != null)
+            {
+                if (checkUser.Username.ToLower() == request.Username.ToLower()) return await Task.FromResult(new Response<object>(Message.FailedTaken("Username")));
+                if (checkUser.Email.ToLower() == request.Email.ToLower()) return await Task.FromResult(new Response<object>(Message.FailedTaken("Email")));
+            }
+
             var data = new User
             {
                 FirstName = request.FirstName,
@@ -63,10 +74,10 @@ namespace PetShop.Application.Users.Command
             _context.Users.Add(data);
             _context.SaveChanges();
 
-            if (data.UserId != 0)
-                return await Task.FromResult(new Response<object>(data, Message.Success()));
+            if (data.UserId == 0 || data == null)
+                return await Task.FromResult(new Response<object>(Message.Custom("Failed to save data!")));
             else
-                return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+                return await Task.FromResult(new Response<object>(data, Message.Success()));
         }
     }
 }

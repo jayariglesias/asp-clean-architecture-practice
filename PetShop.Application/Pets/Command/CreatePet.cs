@@ -49,11 +49,11 @@ namespace PetShop.Application.Pets.Command
             if(!Validate.String(request.Breed)) return await Task.FromResult(new Response<object>(Message.FailedString("Breed")));
 
             var verify = _context.Users.FirstOrDefault(x => x.UserId == request.UserId);
-            if (verify == null) return await Task.FromResult(new Response<object>(Message.Value("User not registered yet.")));
+            if (verify == null) return await Task.FromResult(new Response<object>(Message.Custom("You can`t create pet if user is not registered.")));
 
             var data = new Pet
             {
-                UserId= request.UserId,
+                UserId = request.UserId,
                 PetName = request.PetName,
                 PetType = request.PetType,
                 Breed = request.Breed,
@@ -63,10 +63,11 @@ namespace PetShop.Application.Pets.Command
             _context.Pets.Add(data);
             _context.SaveChanges();
 
-            if (data.PetId != 0)
-                return await Task.FromResult(new Response<object>(data, Message.Success()));
+            if (data.PetId == 0 || data == null)
+                return await Task.FromResult(new Response<object>(Message.Custom("Failed to save data!")));
             else
-                return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+                return await Task.FromResult(new Response<object>(data, Message.Success()));
+
         }
     }
 }

@@ -37,14 +37,11 @@ namespace PetShop.Application.Users.Queries
         public async Task<Response<object>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var data = _context.Users.FirstOrDefault(x => x.UserId == request.UserId);
-            if (data != null)
-            {
-                _context.Users.Remove(data);
-                _context.SaveChanges();
-                return await Task.FromResult(new Response<object>(Message.Success(),true));
-            }
+            if (data == null) return await Task.FromResult(new Response<object>(Message.NotFound("User")));
 
-            return await Task.FromResult(new Response<object>(Message.NotFound("User")));
+            _context.Users.Remove(data);
+            _context.SaveChanges();
+            return await Task.FromResult(new Response<object>(Message.Success(),true));
         }
 
     }

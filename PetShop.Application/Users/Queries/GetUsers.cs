@@ -9,6 +9,7 @@ using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
 using PetShop.Application.Common.Validator;
 using PetShop.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Users.Queries
 {
@@ -27,16 +28,18 @@ namespace PetShop.Application.Users.Queries
 
         public async Task<Response<List<User>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var data = _context.Users.ToList();
-            
-            if (data == null)
-                throw new ApiException("Data Not Found.");
-            if (data.Count() == 0)
+            var data = _context.Users
+                .Include(u => u.Pets)
+                .ThenInclude(p => p.User)
+                .Include(u => u.Pets)
+                .ThenInclude(v => v.Visits)
+                .ToList();
+
+            if (data == null || data.Count() == 0)
                 return await Task.FromResult(new Response<List<User>>(Message.NotFound("Users")));
             else
                 return await Task.FromResult(new Response<List<User>>(data, Message.Success()));
         }
-      
     }
 
 }

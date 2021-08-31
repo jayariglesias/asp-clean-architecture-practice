@@ -46,12 +46,12 @@ namespace PetShop.Application.Auth.Command
                 x.Password == request.Password
             );
 
-            var cred = new AuthResponse(data, Token.Generate(data, _config));
+            var credentials = new AuthResponse(data, Token.Generate(data, _config, 630000));
 
             if (data == null)
-                return await Task.FromResult(new Response<object>(Message.Value("Invalid Credentials!")));
+                return await Task.FromResult(new Response<object>(Message.Custom("Invalid Credentials!")));
             else
-                return await Task.FromResult(new Response<object>(cred, Message.Success()));
+                return await Task.FromResult(new Response<object>(credentials, Message.Success()));
         }
     }
 }

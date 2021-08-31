@@ -34,7 +34,6 @@ namespace PetShop.Infrastructure.Data
                 .WithMany(pet => pet.Visits)
                 .HasForeignKey(visit => visit.PetId)
                 .HasPrincipalKey(pet => pet.PetId);
-
         }
     }
 }

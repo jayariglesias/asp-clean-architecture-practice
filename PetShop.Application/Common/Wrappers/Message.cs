@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PetShop.Application.Common.Validator
+namespace PetShop.Application.Common.Wrappers
 {
     public class Message
     {
@@ -10,7 +10,8 @@ namespace PetShop.Application.Common.Validator
         {
             return "Welcome to PetShop";
         }
-        public static string Value(string x)
+
+        public static string Custom(string x)
         {
             return x;
         }
@@ -27,12 +28,22 @@ namespace PetShop.Application.Common.Validator
 
         public static string FailedFields()
         {
-            return "Failed! Please fill all the fields!";
+            return "Failed! Please fill all the fields.";
+        }
+
+        public static string FailedTaken(string x = "Data")
+        {
+            return $"Failed! { x } already taken.";
+        }
+
+        public static string FailedDate()
+        {
+            return "Failed! Invalid date format.";
         }
 
         public static string NotFound(string x)
         {
-            return $"{ x } Not Found!";
+            return $"Failed! { x } not found!";
         }
 
         public static string Success(string x = null)

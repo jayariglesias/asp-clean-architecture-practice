@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using PetShop.Domain.Entities;
-using PetShop.Application.Common.Interfaces;
-using PetShop.Infrastructure.Data;
-using Newtonsoft.Json;
-using PetShop.Application.Common.Validator;
-using PetShop.Application.Common.DTO;
-using System;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

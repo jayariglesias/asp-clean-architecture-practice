@@ -37,14 +37,11 @@ namespace PetShop.Application.Visits.Queries
         public async Task<Response<object>> Handle(DeleteVisitCommand request, CancellationToken cancellationToken)
         {
             var data = _context.Visits.FirstOrDefault(x => x.VisitId == request.VisitId);
-            if (data != null)
-            {
-                _context.Visits.Remove(data);
-                _context.SaveChanges();
-                return await Task.FromResult(new Response<object>(Message.Success(),true));
-            }
+            if (data == null) return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
 
-            return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
+            _context.Visits.Remove(data);
+            _context.SaveChanges();
+            return await Task.FromResult(new Response<object>(Message.Success(),true));
         }
 
     }

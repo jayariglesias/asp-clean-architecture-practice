@@ -51,11 +51,11 @@ namespace PetShop.Application.Visits.Command
                 _context.Visits.Update(data);
                 _context.SaveChanges();
 
-                if (data.VisitId != 0)
-                    return await Task.FromResult(new Response<object>(data, Message.Success()));
+                if (data.VisitId == 0)
+                    return await Task.FromResult(new Response<object>(Message.Custom("Failed to save data!")));
                 else
-                    return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+                    return await Task.FromResult(new Response<object>(data, Message.Success()));
         }
-      
+
     }
 }

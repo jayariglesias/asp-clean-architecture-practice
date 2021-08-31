@@ -10,21 +10,23 @@ using PetShop.Application.Common.Wrappers;
 using PetShop.Application.Common.Validator;
 using PetShop.Domain.Entities;
 using System;
-using PetShop.Application.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Visits.Queries {
-    public class SearchVisitQuery : IRequest < Response < object >>
+    public class SearchVisitQuery : IRequest<Response<object>>
     {
-        public SearchVisitQuery(VisitRequest e) {
+        public SearchVisitQuery(VisitRequest e) 
+        {
             VisitId = e.VisitId;
             PetId = e.PetId;
             VisitType = e.VisitType;
             VisitFrom = e.VisitFrom;
             VisitTo = e.VisitTo;
-            FirstName = LetterCase.ToLower(e.FirstName);
-            MiddleName = LetterCase.ToLower(e.MiddleName);
-            LastName = LetterCase.ToLower(e.LastName);
-            Notes = LetterCase.ToLower(e.Notes);
+            FirstName = e.FirstName ?? "";
+            MiddleName = e.MiddleName ?? "";
+            LastName = e.LastName ?? "";
+            PetName = e.PetName ?? "";
+            Notes = e.Notes ?? "";
         }
 
         public int VisitId { get; set; }
@@ -37,56 +39,61 @@ namespace PetShop.Application.Visits.Queries {
         public string LastName { get; set; }
         public string Notes { get; set; }
         public string PetName { get; set; }
-}
-
-public class SearchVisitQueryHandler : IRequestHandler < SearchVisitQuery, Response < object >>
-{
-    private readonly IDataContext _context;
-    public SearchVisitQueryHandler(IDataContext context) {
-        _context = context;
     }
 
+    public class SearchVisitQueryHandler : IRequestHandler<SearchVisitQuery, Response<object>>
+    {
+        private readonly IDataContext _context;
+        public SearchVisitQueryHandler(IDataContext context) 
+        {
+            _context = context;
+        }
+
         public async Task<Response< object >> Handle(SearchVisitQuery request, CancellationToken cancellationToken)
-{
-    if (!Validate.Int(request.VisitId))
-        return await Task.FromResult(new Response < object > (Message.FailedString("Visit Id")));
+        {
+                if (!Validate.Int(request.VisitId))
+                    return await Task.FromResult(new Response<object>(Message.FailedString("Visit Id")));
+                if(request.VisitFrom > request.VisitTo)
+                    return await Task.FromResult(new Response<object>(Message.Custom("VisitFrom must not greater than VisitTo")));
 
-        var data = _context.Pets
-            .Join(_context.Visits,
-                Pet => Pet.PetId,
-                Visit => Visit.PetId,
-                (Pet, Visit) =>
-                    new { Pet, Visit }
-            ).Join(_context.Users,
-                combined => combined.Pet.UserId,
-                User => User.UserId,
-                (combined, user) => new
-                {
-                    user.FirstName,
-                    user.LastName,
-                    user.MiddleName,
-                    combined.Pet.UserId,
-                    combined.Pet.PetName,
-                    combined.Pet.PetType,
-                    combined.Visit.Notes,
-                    combined.Visit.VisitType,
-                    combined.Visit.VisitDate
-                })
-            .Where(d =>
-                (
-                    d.FirstName.ToLower().Contains(request.FirstName) ||
-                    d.MiddleName.ToLower().Contains(request.MiddleName) ||
-                    d.LastName.ToLower().Contains(request.LastName) ||
-                    d.PetName.ToLower().Contains(request.MiddleName) ||
-                    d.VisitType.Equals(request.VisitType)
-                )
-                && (d.VisitDate >= request.VisitFrom && d.VisitDate <= request.VisitTo)
-            );
+                    var data = _context.Visits
+                        .Include(v => v.Pet)
+                        .ThenInclude(p => p.User)
+                        .Where(v =>
+                            (
+                                v.Pet.PetName.ToLower().Contains(request.PetName.ToLower()) ||
+                                v.Pet.User.FirstName.ToLower().Contains(request.FirstName.ToLower()) ||
+                                v.Pet.User.MiddleName.ToLower().Contains(request.MiddleName.ToLower()) ||
+                                v.Pet.User.LastName.ToLower().Contains(request.LastName.ToLower())
+                            ) ||
+                            (
+                                v.VisitDate >= request.VisitFrom && v.VisitDate <= request.VisitTo
+                            )
+                        )
+                        .Select(v => new
+                        {
+                            v.VisitId,
+                            v.PetId,
+                            v.Pet.PetName,
+                            v.Pet.PetType,
+                            v.Pet.Breed,
+                            v.Notes,
+                            v.VisitDate,
+                            Owner = new
+                            {
+                                v.Pet.User.FirstName,
+                                v.Pet.User.LastName,
+                                v.Pet.User.MiddleName,
+                                v.Pet.User.Username,
+                                v.Pet.User.Email
+                            },
+                        })
+                        .ToList();
 
-        if (data == null)
-            return await Task.FromResult(new Response < object > (Message.NotFound("Visit")));
-        else
-            return await Task.FromResult(new Response < object > (data, Message.Success()));
-}
+                if (data == null)
+                    return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
+                else
+                    return await Task.FromResult(new Response<object>(data, Message.Success()));
+        }
     }
 }

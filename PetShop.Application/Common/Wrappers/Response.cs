@@ -14,7 +14,7 @@ namespace PetShop.Application.Common.Wrappers
             Data = data;
         }
 
-        public Response(string message,bool status = false)
+        public Response(string message, bool status = false)
         {
             Status = status;
             Message = message;

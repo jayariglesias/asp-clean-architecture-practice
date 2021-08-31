@@ -13,24 +13,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Visits.Queries
 {
-    public class GetVisitsQuery : IRequest<Response<object>>
+
+    public class GetVisitByIdQuery : IRequest<Response<object>>
     {
+        public GetVisitByIdQuery(int id)
+        {
+            VisitId = id;
+        }
+
+        public int VisitId { get; set; }
+
     }
 
-    public class GetVisitsQueryHandler : IRequestHandler<GetVisitsQuery, Response<object>>
+    public class GetVisitByIdHandler : IRequestHandler<GetVisitByIdQuery, Response<object>>
     {
         private readonly IDataContext _context;
 
-        public GetVisitsQueryHandler(IDataContext context)
+        public GetVisitByIdHandler(IDataContext context)
         {
             _context = context;
         }
 
-        public async Task<Response<object>> Handle(GetVisitsQuery request, CancellationToken cancellationToken)
+        public async Task<Response<object>> Handle(GetVisitByIdQuery request, CancellationToken cancellationToken)
         {
             var data = _context.Visits
                 .Include(v => v.Pet)
                 .ThenInclude(p => p.User)
+                .Where(u => u.VisitId == request.VisitId)
                 .Select(v => new
                 {
                     v.VisitId,
@@ -49,14 +58,13 @@ namespace PetShop.Application.Visits.Queries
                         v.Pet.User.Email
                     },
                 })
-                .ToList();
+                .FirstOrDefault();
 
-            if (data.Count() == 0 || data == null)
-                return await Task.FromResult(new Response<object>(Message.NotFound("Data")));
+            if (data == null)
+                return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
             else
-                return await Task.FromResult(new Response<object>(data, Message.Success()));
+                return await Task.FromResult(new Response<object>(data,Message.Success()));
         }
-      
-    }
 
+    }
 }

@@ -44,22 +44,22 @@ namespace PetShop.Application.Pets.Command
         {
 
             var data = _context.Pets.FirstOrDefault(x => x.PetId == request.PetId);
-            if (data == null)
-                return await Task.FromResult(new Response<object>(Message.NotFound("User")));
+            if (data == null) 
+                return await Task.FromResult(new Response<object>(Message.NotFound("Pet")));
             else
                 data.PetName = request.PetName ?? data.PetName;
-                data.PetType = Validate.Int(request.PetType) ? request.PetType : data.PetType;
                 data.Breed = request.Breed ?? data.Breed;
+                data.PetType = Validate.Int(request.PetType) ? request.PetType : data.PetType;
                 data.Birthdate = Validate.String(request.Birthdate.ToString()) ? request.Birthdate : data.Birthdate;
 
                 _context.Pets.Update(data);
                 _context.SaveChanges();
 
-                if (data.PetId != 0)
-                    return await Task.FromResult(new Response<object>(data, Message.Success()));
+                if (data.PetId == 0 || data == null)
+                    return await Task.FromResult(new Response<object>(Message.Custom("Failed to update data!")));
                 else
-                    return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+                    return await Task.FromResult(new Response<object>(data, Message.Success()));
         }
-      
+
     }
 }

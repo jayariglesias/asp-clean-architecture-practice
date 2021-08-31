@@ -32,9 +32,9 @@ namespace PetShop.Api.Controllers
         }
 
         [HttpGet("search/{id?}")]
-        public async Task<Response<Pet>> GetPet(int id)
+        public async Task<Response<object>> GetPetById(int id)
         {
-            var query = new GetPetQuery(id);
+            var query = new GetPetByIdQuery(id);
             var result = await Mediator.Send(query);
             return result;
         }

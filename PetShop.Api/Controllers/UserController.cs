@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PetShop.Application.Common.DTO;
-using PetShop.Application.Common.Interfaces;
-using PetShop.Application.Common.Validator;
 using PetShop.Application.Common.Wrappers;
 using PetShop.Application.Users.Command;
 using PetShop.Application.Users.Queries;
 using PetShop.Domain.Entities;
-using PetShop.Infrastructure.Data;
 
 namespace PetShop.Api.Controllers
 {
@@ -31,9 +26,9 @@ namespace PetShop.Api.Controllers
         }
 
         [HttpGet("search/{id?}")]
-        public async Task<Response<User>> GetUser(int id)
+        public async Task<Response<User>> GetUserById(int id)
         {
-            var query = new GetUserQuery(id);
+            var query = new GetUserByIdQuery(id);
             var result = await Mediator.Send(query);
             return result;
         }

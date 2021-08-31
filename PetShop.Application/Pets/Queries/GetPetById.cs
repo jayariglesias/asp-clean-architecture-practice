@@ -13,25 +13,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Pets.Queries
 {
-    public class GetPetsQuery : IRequest<Response<object>>
+
+    public class GetPetByIdQuery : IRequest<Response<object>>
     {
+        public GetPetByIdQuery(int id)
+        {
+            PetId = id;
+        }
+
+        public int PetId { get; set; }
+
     }
 
-    public class GetPetsQueryHandler : IRequestHandler<GetPetsQuery, Response<object>>
+    public class GetPetByIdHandler : IRequestHandler<GetPetByIdQuery, Response<object>>
     {
         private readonly IDataContext _context;
 
-        public GetPetsQueryHandler(IDataContext context)
+        public GetPetByIdHandler(IDataContext context)
         {
             _context = context;
         }
 
-        public async Task<Response<object>> Handle(GetPetsQuery request, CancellationToken cancellationToken)
+        public async Task<Response<object>> Handle(GetPetByIdQuery request, CancellationToken cancellationToken)
         {
             var data = _context.Pets
                 .Include(u => u.User)
                 .ThenInclude(p => p.Pets)
                 .Include(p => p.Visits)
+                .Where(u => u.PetId == request.PetId)
                 .Select(p => new
                 {
                     p.PetId,
@@ -54,16 +63,13 @@ namespace PetShop.Application.Pets.Queries
                         v.Notes
                     })
                 })
-                .ToList();
+                .FirstOrDefault();
 
             if (data == null)
-                throw new ApiException("Data Not Found.");
-            if (data.Count() == 0)
-                return await Task.FromResult(new Response<object>(Message.NotFound("Data")));
+                return await Task.FromResult(new Response<object>(Message.NotFound("Pet")));
             else
-                return await Task.FromResult(new Response<object>(data, Message.Success()));
+                return await Task.FromResult(new Response<object>(data,Message.Success()));
         }
-      
-    }
 
+    }
 }

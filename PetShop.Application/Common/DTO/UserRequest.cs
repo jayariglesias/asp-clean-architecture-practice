@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PetShop.Application.Common.Interfaces;
 using PetShop.Domain.Common;
 
 namespace PetShop.Application.Common.DTO
 {
-    public class UserRequest : IdRequest
+    public class UserRequest : IRequestId, IUser
     {
+        public int UserId { get; set; }
+        public int PetId { get; set; }
+        public int VisitId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }

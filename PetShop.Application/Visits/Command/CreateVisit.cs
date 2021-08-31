@@ -47,7 +47,7 @@ namespace PetShop.Application.Visits.Command
             if(!Validate.Int(request.VisitType)) return await Task.FromResult(new Response<object>(Message.FailedInt("Visit type")));
 
             var verify = _context.Pets.FirstOrDefault(x => x.PetId == request.PetId);
-            if(verify == null) return await Task.FromResult(new Response<object>(Message.Value("Pet not registered yet.")));
+            if(verify == null) return await Task.FromResult(new Response<object>(Message.Custom("You can`t create visit if pet is not registered.")));
 
             var data = new Visit
             {
@@ -60,10 +60,10 @@ namespace PetShop.Application.Visits.Command
             _context.Visits.Add(data);
             _context.SaveChanges();
 
-            if (data.PetId != 0)
-                return await Task.FromResult(new Response<object>(data, Message.Success()));
+            if (data.PetId == 0)
+                return await Task.FromResult(new Response<object>(Message.Custom("Failed to save data!")));
             else
-                return await Task.FromResult(new Response<object>(Message.Value("Failed to save data!")));
+                return await Task.FromResult(new Response<object>(data, Message.Success()));
         }
     }
 }

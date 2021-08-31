@@ -9,6 +9,7 @@ using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
 using PetShop.Application.Common.Validator;
 using PetShop.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Users.Queries
 {
@@ -17,8 +18,8 @@ namespace PetShop.Application.Users.Queries
    
     public SearchUserQuery(UserRequest e)
     {
-        FirstName = e.FirstName;
-        LastName = e.LastName;
+        FirstName = e.FirstName ?? "";
+        LastName = e.LastName ?? "";
     }
 
         public string FirstName { get; set; }
@@ -35,13 +36,16 @@ namespace PetShop.Application.Users.Queries
 
         public async Task<Response<object>> Handle(SearchUserQuery request, CancellationToken cancellationToken)
         {
-            if (!Validate.String(request.FirstName)) return await Task.FromResult(new Response<object>(Message.FailedString("First name")));
-            if (!Validate.String(request.LastName)) return await Task.FromResult(new Response<object>(Message.FailedString("Last name")));
-           
-            var data = _context.Users.FirstOrDefault(x => 
-                x.FirstName.ToLower().Contains(request.FirstName.ToLower()) && 
-                x.LastName.ToLower().Contains(request.LastName.ToLower())
-            );
+            var data = _context.Users
+                .Include(u => u.Pets)
+                .ThenInclude(p => p.User)
+                .Include(u => u.Pets)
+                .ThenInclude(v => v.Visits)
+                .Where(u => 
+                    u.FirstName.ToLower().Contains(request.FirstName.ToLower()) ||
+                    u.LastName.ToLower().Contains(request.LastName.ToLower())
+                )
+                .FirstOrDefault();
 
             if (data == null) 
                 return await Task.FromResult(new Response<object>(Message.NotFound("User")));
