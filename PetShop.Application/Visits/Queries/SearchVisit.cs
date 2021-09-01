@@ -61,10 +61,10 @@ namespace PetShop.Application.Visits.Queries {
                         .ThenInclude(p => p.User)
                         .Where(v =>
                             (
-                                v.Pet.PetName.ToLower().Contains(request.PetName.ToLower()) ||
-                                v.Pet.User.FirstName.ToLower().Contains(request.FirstName.ToLower()) ||
-                                v.Pet.User.MiddleName.ToLower().Contains(request.MiddleName.ToLower()) ||
-                                v.Pet.User.LastName.ToLower().Contains(request.LastName.ToLower())
+                                v.Pet.PetName.ToLower() == request.PetName.ToLower() ||
+                                v.Pet.User.FirstName.ToLower() == request.FirstName.ToLower() ||
+                                v.Pet.User.MiddleName.ToLower() == request.MiddleName.ToLower() ||
+                                v.Pet.User.LastName.ToLower() == request.LastName.ToLower()
                             ) ||
                             (
                                 v.VisitDate >= request.VisitFrom && v.VisitDate <= request.VisitTo
@@ -90,7 +90,7 @@ namespace PetShop.Application.Visits.Queries {
                         })
                         .ToList();
 
-                if (data == null)
+                if (data.Count == 0 || data == null)
                     return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
                 else
                     return await Task.FromResult(new Response<object>(data, Message.Success()));

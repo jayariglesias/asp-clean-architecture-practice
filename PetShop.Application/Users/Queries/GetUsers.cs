@@ -13,11 +13,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PetShop.Application.Users.Queries
 {
-    public class GetUsersQuery : IRequest<Response<List<User>>>
+    public class GetUsersQuery : IRequest<Response<object>>
     {
     }
 
-    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Response<List<User>>>
+    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, Response<object>>
     {
         private readonly IDataContext _context;
 
@@ -26,19 +26,40 @@ namespace PetShop.Application.Users.Queries
             _context = context;
         }
 
-        public async Task<Response<List<User>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+        public async Task<Response<object>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             var data = _context.Users
                 .Include(u => u.Pets)
-                .ThenInclude(p => p.User)
-                .Include(u => u.Pets)
-                .ThenInclude(v => v.Visits)
+                .ThenInclude(p => p.Visits)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.FirstName,
+                    u.LastName,
+                    u.Username,
+                    u.Email,
+                    Pets = u.Pets.Select(p => new
+                    {
+                        p.PetId,
+                        p.PetName,
+                        p.Birthdate,
+                        Visits = p.Visits.Select(v => new
+                        {
+                            v.PetId,
+                            v.VisitId,
+                            v.VisitDate,
+                            v.Notes
+                        }
+                    )
+                    }
+                )
+                })
                 .ToList();
 
             if (data == null || data.Count() == 0)
-                return await Task.FromResult(new Response<List<User>>(Message.NotFound("Users")));
+                return await Task.FromResult(new Response<object>(Message.NotFound("Users")));
             else
-                return await Task.FromResult(new Response<List<User>>(data, Message.Success()));
+                return await Task.FromResult(new Response<object>(data, Message.Success()));
         }
     }
 

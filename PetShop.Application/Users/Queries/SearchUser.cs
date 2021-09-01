@@ -20,9 +20,11 @@ namespace PetShop.Application.Users.Queries
     {
         FirstName = e.FirstName ?? "";
         LastName = e.LastName ?? "";
+        MiddleName = e.MiddleName ?? "";
     }
 
         public string FirstName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
     }
 
@@ -36,16 +38,37 @@ namespace PetShop.Application.Users.Queries
 
         public async Task<Response<object>> Handle(SearchUserQuery request, CancellationToken cancellationToken)
         {
+
             var data = _context.Users
                 .Include(u => u.Pets)
-                .ThenInclude(p => p.User)
-                .Include(u => u.Pets)
-                .ThenInclude(v => v.Visits)
-                .Where(u => 
-                    u.FirstName.ToLower().Contains(request.FirstName.ToLower()) ||
-                    u.LastName.ToLower().Contains(request.LastName.ToLower())
+                .ThenInclude(p => p.Visits)
+                .Where(u =>
+                    u.FirstName.ToLower() == request.FirstName.ToLower() ||
+                    u.LastName.ToLower() == request.LastName.ToLower()
                 )
-                .FirstOrDefault();
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.FirstName,
+                    u.LastName,
+                    u.Username,
+                    u.Email,
+                    Pets = u.Pets.Select(p => new
+                    {
+                        p.PetId,
+                        p.PetName,
+                        p.Birthdate,
+                        Visits = p.Visits.Select(v => new
+                        {
+                            v.PetId,
+                            v.VisitId,
+                            v.VisitDate,
+                            v.Notes
+                        }
+                    )}
+                )})
+                .ToList();
+                
 
             if (data == null) 
                 return await Task.FromResult(new Response<object>(Message.NotFound("User")));
