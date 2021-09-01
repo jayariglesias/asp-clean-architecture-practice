@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PetShop.Application.Common.DTO
 {
-    public class PetRequest : IUser,IRequestId, IPet
+    public class PetRequest : IUser,IRequestId, IPet, IVisit
     {
         public int UserId { get; set; }
         public int PetId { get; set; }
@@ -22,5 +22,10 @@ namespace PetShop.Application.Common.DTO
         public string Password { get; set; }
         public int UserType { get; set; }
         public int Active { get; set; }
+        public int VisitType { get; set; }
+        public DateTime VisitDate { get; set; }
+        public DateTime VisitFrom { get; set; }
+        public DateTime VisitTo { get; set; }
+        public string Notes { get; set; }
     }
 }
