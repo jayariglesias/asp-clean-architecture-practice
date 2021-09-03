@@ -28,18 +28,18 @@ namespace PetShop.Application.Common.Mappings
             {
                 var instance = Activator.CreateInstance(type);
 
-                var mapFrom = type.GetMethod("MapFrom") ??
-                        instance!.GetType()
+                var mapF = type.GetMethod("MapFrom") ??
+                         instance!.GetType()
                         .GetInterface("IMapFrom`1")?
                         .GetMethod("MapFrom");
 
-                var mapTo = type.GetMethod("MapTo") ??
-                        instance!.GetType()
+                var mapT = type.GetMethod("MapTo") ??
+                         instance!.GetType()
                         .GetInterface("IMapTo`1")?
                         .GetMethod("MapTo");
 
-                mapFrom?.Invoke(instance, new object[] { this });
-                mapTo?.Invoke(instance, new object[] { this });
+                mapF?.Invoke(instance, new object[] { this });
+                mapT?.Invoke(instance, new object[] { this });
             }
         }
     }
