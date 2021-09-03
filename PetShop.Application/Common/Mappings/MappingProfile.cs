@@ -15,14 +15,31 @@ namespace PetShop.Application.Common.Mappings
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+                .Where(t => t.GetInterfaces().Any(i => 
+                    i.IsGenericType && 
+                    (
+                        i.GetGenericTypeDefinition() == typeof(IMapFrom<>) || 
+                        i.GetGenericTypeDefinition() == typeof(IMapTo<>)
+                    )
+                ))
                 .ToList();
 
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
-                var methodInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
-                methodInfo?.Invoke(instance, new object[] { this });
+
+                var mapFrom = type.GetMethod("MapFrom") ??
+                        instance!.GetType()
+                        .GetInterface("IMapFrom`1")?
+                        .GetMethod("MapFrom");
+
+                var mapTo = type.GetMethod("MapTo") ??
+                        instance!.GetType()
+                        .GetInterface("IMapTo`1")?
+                        .GetMethod("MapTo");
+
+                mapFrom?.Invoke(instance, new object[] { this });
+                mapTo?.Invoke(instance, new object[] { this });
             }
         }
     }
