@@ -10,8 +10,6 @@ namespace PetShop.Application.Common.Interfaces
         public int PetId { get; set; }
         public int VisitType { get; set; }
         public DateTime VisitDate { get; set; }
-        public DateTime VisitFrom { get; set; }
-        public DateTime VisitTo { get; set; }
         public string Notes { get; set; }
     }
 }

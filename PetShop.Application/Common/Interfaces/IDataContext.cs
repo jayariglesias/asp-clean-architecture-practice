@@ -15,5 +15,6 @@ namespace PetShop.Application.Common.Interfaces
         DbSet<Visit> Visits { get; set; }
 
         int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
