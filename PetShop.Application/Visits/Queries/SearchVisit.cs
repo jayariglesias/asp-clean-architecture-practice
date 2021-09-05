@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using PetShop.Application.Common.DTO;
+using PetShop.Application.Common.Dtos;
 using PetShop.Application.Common.Interfaces;
 using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PetShop.Application.Visits.Queries {
     public class SearchVisitQuery : IRequest<Response<object>>
     {
-        public SearchVisitQuery(VisitRequest e) 
+        public SearchVisitQuery(PetRequest e) 
         {
             VisitId = e.VisitId;
             PetId = e.PetId;
@@ -90,7 +90,7 @@ namespace PetShop.Application.Visits.Queries {
                         })
                         .ToList();
 
-                if (data.Count == 0 || data == null)
+                if (data == null || data.Count == 0)
                     return await Task.FromResult(new Response<object>(Message.NotFound("Visit")));
                 else
                     return await Task.FromResult(new Response<object>(data, Message.Success()));

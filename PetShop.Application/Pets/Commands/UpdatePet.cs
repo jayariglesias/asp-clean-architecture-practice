@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using PetShop.Application.Common.DTO;
+using PetShop.Application.Common.Dtos;
 using PetShop.Application.Common.Interfaces;
 using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
@@ -12,7 +12,7 @@ using PetShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace PetShop.Application.Pets.Command
+namespace PetShop.Application.Pets.Commands
 {
     public class UpdatePetCommand : IRequest<Response<object>>
     {

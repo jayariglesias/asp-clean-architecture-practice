@@ -3,20 +3,20 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using PetShop.Application.Common.DTO;
 using PetShop.Application.Common.Interfaces;
 using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
-using PetShop.Application.Common.Validator;
 using PetShop.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using PetShop.Application.Common.Validator;
+using PetShop.Application.Common.Dtos;
+using PetShop.Application.Auth.Dtos;
 
-namespace PetShop.Application.Auth.Command
+namespace PetShop.Application.Auth.Commands
 {
     public class LoginCommand : IRequest<Response<object>>
     {
-
-        public LoginCommand(UserRequest e)
+        public LoginCommand(PetRequest e)
         {
             Username = e.Username;
             Password = e.Password;
@@ -29,11 +29,12 @@ namespace PetShop.Application.Auth.Command
     public class LoginCommandHandler : IRequestHandler<LoginCommand, Response<object>>
     {
         private readonly IDataContext _context;
-        private readonly IConfiguration _config;
-        public LoginCommandHandler(IDataContext context, IConfiguration config)
+        private readonly IToken _token;
+
+        public LoginCommandHandler(IDataContext context, IToken token)
         {
             _context = context;
-            _config = config;
+            _token = token;
         }
 
         public async Task<Response<object>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -46,15 +47,19 @@ namespace PetShop.Application.Auth.Command
                 x.Password == request.Password
             );
 
-
             if (data == null)
             {
                 return await Task.FromResult(new Response<object>(Message.Custom("Invalid Credentials!")));
             }
             else
             {
-                var credentials = new AuthResponse(data, Token.Generate(data, _config, 630000));
-                return await Task.FromResult(new Response<object>(credentials, Message.Success()));
+                var token = await _token.Create(data, 60);
+                if(token != null)
+                {
+                    var credentials = new loginDto(data, token); ;
+                    return await Task.FromResult(new Response<object>(credentials, Message.Success()));
+                }
+                return await Task.FromResult(new Response<object>(Message.Custom("Failed! Can`t Generate a Token.")));
             }
         }
     }

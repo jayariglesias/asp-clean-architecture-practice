@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using PetShop.Application.Common.DTO;
+using PetShop.Application.Common.Dtos;
 using PetShop.Application.Common.Interfaces;
 using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
@@ -11,11 +11,11 @@ using PetShop.Application.Common.Validator;
 using PetShop.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace PetShop.Application.Users.Command
+namespace PetShop.Application.Users.Commands
 {
     public class UpdateUserCommand : IRequest<Response<object>>
     {
-        public UpdateUserCommand(UserRequest e)
+        public UpdateUserCommand(PetRequest e)
         {
             UserId = e.UserId;
             FirstName = e.FirstName;

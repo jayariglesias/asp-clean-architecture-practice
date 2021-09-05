@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using PetShop.Application.Common.DTO;
+using PetShop.Application.Common.Dtos;
 using PetShop.Application.Common.Interfaces;
 using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
@@ -16,7 +16,7 @@ namespace PetShop.Application.Users.Queries
     public class SearchUserQuery : IRequest<Response<object>>
     {
    
-    public SearchUserQuery(UserRequest e)
+    public SearchUserQuery(PetRequest e)
     {
         FirstName = e.FirstName ?? "";
         LastName = e.LastName ?? "";
