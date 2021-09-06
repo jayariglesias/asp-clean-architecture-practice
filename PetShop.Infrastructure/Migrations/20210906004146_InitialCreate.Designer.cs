@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PetShop.Infrastructure.Data;
+using PetShop.Infrastructure.Persistence.Context;
 
-namespace PetShop.Api.Migrations
+namespace PetShop.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210829183440_InitialCreate")]
+    [Migration("20210906004146_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

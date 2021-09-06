@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace PetShop.Api.Migrations
+namespace PetShop.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {
