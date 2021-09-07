@@ -38,7 +38,7 @@ namespace PetShop.Application.Visits.Queries.GetVisits
 
             if (data == null || data.Count() == 0)
             {
-                throw new ApiException(Message.Custom(Message.NotFound("Visits")));
+                throw new ApiException(Message.NotFound("Visits"));
             }
             else
             {

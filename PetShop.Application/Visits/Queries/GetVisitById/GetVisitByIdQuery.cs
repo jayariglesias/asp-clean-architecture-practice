@@ -40,7 +40,7 @@ namespace PetShop.Application.Visits.Queries.GetVisitById
 
             if (data == null)
             {
-                throw new ApiException(Message.Custom(Message.NotFound("Visit")));
+                throw new ApiException(Message.NotFound("Visit"));
             }
             else
             {
