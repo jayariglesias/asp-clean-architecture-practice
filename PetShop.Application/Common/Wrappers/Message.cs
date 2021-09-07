@@ -18,32 +18,32 @@ namespace PetShop.Application.Common.Wrappers
 
         public static string FailedString(string x)
         {
-            return $"Failed! { x } must not be null or contain white spaces.";
+            return $"{ x } must not be null or contain white spaces.";
         }
 
         public static string FailedInt(string x)
         {
-            return $"Failed! { x } must a integer number.";
+            return $"{ x } must a integer number.";
         }
 
         public static string FailedFields()
         {
-            return "Failed! Please fill all the fields.";
+            return "Please fill all the fields.";
         }
 
         public static string FailedTaken(string x = "Data")
         {
-            return $"Failed! { x } already taken.";
+            return $"{ x } already taken.";
         }
 
         public static string FailedDate()
         {
-            return "Failed! Invalid date format.";
+            return "Invalid date format.";
         }
 
         public static string NotFound(string x)
         {
-            return $"Failed! { x } not found!";
+            return $"{ x } not found!";
         }
 
         public static string Success(string x = null)
