@@ -10,12 +10,12 @@ namespace PetShop.Api.Extensions
             app.UseMiddleware<ErrorHandlerMiddleware>();
         }
 
-        public static void UseSwaggerExtension(this IApplicationBuilder app) // NOT FINISHED
+        public static void UseSwaggerExtension(this IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetShop.Api");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "PetShop API");
             });
         }
     }
