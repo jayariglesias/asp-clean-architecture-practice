@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
-using PetShop.Domain.Entities;
-using PetShop.Infrastructure.Data;
-using PetShop.Application.Common.Interfaces;
-using PetShop.Application.Common.Wrappers;
-using PetShop.Application.Common.Validator;
-using PetShop.Application.Common.DTO;
-using PetShop.Application.Pets.Queries;
-using PetShop.Application.Pets.Command;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PetShop.Application.Common.Wrappers;
+using PetShop.Application.Pets.Commands.CreatePet;
+using PetShop.Application.Pets.Commands.DeletePet;
+using PetShop.Application.Pets.Commands.UpdatePet;
+using PetShop.Application.Pets.Queries.SearchPets;
+using PetShop.Application.Pets.Queries.GetPetById;
+using PetShop.Application.Pets.Queries.GetPets;
+using PetShop.Application.Pets.Dtos;
 
 namespace PetShop.Api.Controllers
 {
@@ -24,51 +22,39 @@ namespace PetShop.Api.Controllers
         }
 
         [HttpGet("index")]
-        public async Task<Response<object>> GetAllPets()
+        public async Task<Response<IEnumerable<PetDto>>> GetAllPets()
         {
-            var query = new GetPetsQuery();
-            var result = await Mediator.Send(query);
-            return result;
+            return await Mediator.Send(new GetPetsQuery());
         }
 
         [HttpGet("search/{id?}")]
-        public async Task<Response<object>> GetPetById(int id)
+        public async Task<Response<PetDto>> GetPetById(int id)
         {
-            var query = new GetPetByIdQuery(id);
-            var result = await Mediator.Send(query);
-            return result;
+            return await Mediator.Send(new GetPetByIdQuery { PetId = id });
         }
 
         [HttpPost("search")]
-        public async Task<Response<object>> SearchPet(PetRequest e)
+        public async Task<Response<IEnumerable<PetDto>>> SearchPet(SearchPetQuery query)
         {
-            var query = new SearchPetQuery(e);
-            var result = await Mediator.Send(query);
-            return result;
+            return await Mediator.Send(query);
         }
 
         [HttpPost("create")]
-        public async Task<Response<object>> AddPet (PetRequest e)
+        public async Task<Response<object>> AddPet (CreatePetCommand command)
         {
-            var command = new CreatePetCommand(e);
-            var result = await Mediator.Send(command);
-            return result;
+            return await Mediator.Send(command);
         }
 
         [HttpPut("update")]
-        public async Task<Response<object>> UpdatePet(PetRequest e)
+        public async Task<Response<object>> UpdatePet(UpdatePetCommand command)
         {
-            var command = new UpdatePetCommand(e);
-            var result = await Mediator.Send(command);
-            return result;
+            return await Mediator.Send(command);
         }
 
         [HttpDelete("delete")]
-        public async Task<Response<object>> DeletePet(PetRequest e)
+        public async Task<Response<int>> DeletePet(DeletePetCommand command)
         {
-            var command = new DeletePetCommand(e);
-            var result = await Mediator.Send(command);
-            return result;
+            return await Mediator.Send(command);
         }
     }
 }

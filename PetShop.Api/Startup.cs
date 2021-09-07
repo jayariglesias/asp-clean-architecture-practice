@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PetShop.Infrastructure.Persistence.Context;
+using PetShop.Api.Extensions;
 
 namespace PetShop.Api
 {
@@ -29,6 +31,7 @@ namespace PetShop.Api
         {
             services.AddInfrastructure(Configuration);
             services.AddApplication();
+            // services.AddSwaggerExtension(); // NOT FINISHED
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
         }
 
@@ -46,6 +49,8 @@ namespace PetShop.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseErrorHandlerMiddleware();
+            // app.UseSwaggerExtension(); // NOT FINISHED
 
             app.UseEndpoints(endpoints =>
             {

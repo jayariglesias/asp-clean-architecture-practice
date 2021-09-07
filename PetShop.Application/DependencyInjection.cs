@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using System;
-using PetShop.Application.Common.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using PetShop.Application.Common.Dtos;
-using PetShop.Domain.Entities;
 using MediatR;
+using FluentValidation;
+using PetShop.Application.Common.Behaviours;
 
 namespace PetShop.Infrastructure
 {
@@ -16,6 +12,8 @@ namespace PetShop.Infrastructure
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             return services;
         }
     }

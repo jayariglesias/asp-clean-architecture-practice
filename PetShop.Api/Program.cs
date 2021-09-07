@@ -25,7 +25,7 @@ namespace PetShop.Api
                 {
                     var context = services.GetRequiredService<DataContext>();
                     if(!context.Database.IsNpgsql()) { return; }
-                    await context.Database.EnsureCreatedAsync();
+                    await context.Database.MigrateAsync();
                     await DataSeeder.UserAdminSeed(context);
                 }
                 catch (Exception ex)

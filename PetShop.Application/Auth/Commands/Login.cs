@@ -4,24 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using PetShop.Application.Common.Interfaces;
-using PetShop.Application.Common.Exceptions;
 using PetShop.Application.Common.Wrappers;
-using PetShop.Domain.Entities;
-using Microsoft.Extensions.Configuration;
-using PetShop.Application.Common.Validator;
-using PetShop.Application.Common.Dtos;
 using PetShop.Application.Auth.Dtos;
 
 namespace PetShop.Application.Auth.Commands
 {
     public class LoginCommand : IRequest<Response<object>>
     {
-        public LoginCommand(PetRequest e)
-        {
-            Username = e.Username;
-            Password = e.Password;
-        }
-
         public string Username { get; set; }
         public string Password { get; set; }
     }
@@ -39,8 +28,8 @@ namespace PetShop.Application.Auth.Commands
 
         public async Task<Response<object>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            if (!Validate.String(request.Username)) return await Task.FromResult(new Response<object>(Message.FailedString("Username")));
-            if (!Validate.String(request.Password)) return await Task.FromResult(new Response<object>(Message.FailedString("Password")));
+            //if (!Validate.String(request.Username)) return await Task.FromResult(new Response<object>(Message.FailedString("Username")));
+            //if (!Validate.String(request.Password)) return await Task.FromResult(new Response<object>(Message.FailedString("Password")));
 
             var data = _context.Users.FirstOrDefault(x =>
                 x.Username == request.Username &&

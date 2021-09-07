@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using PetShop.Infrastructure.Data;
-using PetShop.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PetShop.Application.Common.Interfaces;
+using PetShop.Infrastructure.Persistence.Context;
+using PetShop.Infrastructure.Persistence.Repository;
+using PetShop.Infrastructure.Security;
 
 namespace PetShop.Infrastructure
 {
@@ -17,10 +17,12 @@ namespace PetShop.Infrastructure
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("PetShop.Api")
+                builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName)
             ));
 
             services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IToken,Token>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

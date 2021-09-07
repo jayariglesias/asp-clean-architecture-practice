@@ -27,7 +27,7 @@ namespace PetShop.Domain.Entities
         public string Password { get; set; }
 
         [Required]
-        public int UserType { get; set; } = 1;
+        public int UserType { get; set; } = 2;
         public int Active { get; set; } = 1;
 
         public List<Pet> Pets { get; set; }

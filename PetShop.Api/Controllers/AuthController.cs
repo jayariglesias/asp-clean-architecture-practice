@@ -1,25 +1,20 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PetShop.Application.Common.DTO;
 using PetShop.Application.Common.Wrappers;
-using PetShop.Application.Auth.Command;
+using PetShop.Application.Auth.Commands;
 
 namespace PetShop.Api.Controllers
 {
     public class AuthController : ApiController
     {
-
         public AuthController()
         {
         }
 
         [HttpPost("login")]
-        public async Task<Response<object>> Login(UserRequest e)
+        public async Task<Response<object>> Login(LoginCommand command)
         {
-            var command = new LoginCommand(e);
-            var result = await Mediator.Send(command);
-            return result;
+            return await Mediator.Send(command);
         }
-
     }
 }
