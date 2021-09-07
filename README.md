@@ -251,7 +251,7 @@ The default response for all request.
 {
   "status": Boolean,
   "message": String,
-  "errors": String,
+  "errors": String/Arrays,
   "data": Object/Array
 }
 ```
