@@ -29,6 +29,16 @@ namespace PetClinic.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("MyAllowOrigin", options =>
+                    options.WithOrigins("http://localhost:3000","http://192.168.1.2:3000")
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                );
+            });
+
             services.AddInfrastructure(Configuration);
             services.AddApplication();
             services.AddSwaggerExtension(); // NOT FINISHED
@@ -46,6 +56,8 @@ namespace PetClinic.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("MyAllowOrigin");
 
             app.UseAuthentication();
             app.UseAuthorization();
