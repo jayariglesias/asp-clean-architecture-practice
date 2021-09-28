@@ -38,11 +38,11 @@ namespace PetClinic.Api.Middlewares
                 switch (error)
                 {
                     case ApiException e: // Custom
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        response.StatusCode = (int)HttpStatusCode.OK;
                         responseModel.Errors = e.Message;
                     break;
                     case ValidationException e: // Custom
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        response.StatusCode = (int)HttpStatusCode.OK;
                         responseModel.Errors = e.Errors;
                     break;
                     case KeyNotFoundException e:
