@@ -28,7 +28,7 @@ namespace PetClinic.Domain.Entities
 
         [Required]
         public int UserType { get; set; } = 2;
-        public int Active { get; set; } = 1;
+        public bool Active { get; set; } = false;
 
         public List<Pet> Pets { get; set; }
     }

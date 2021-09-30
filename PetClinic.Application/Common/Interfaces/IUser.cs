@@ -11,6 +11,6 @@ namespace PetClinic.Application.Common.Interfaces
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public int UserType { get; set; }
-        public int Active { get; set; }
+        public bool Active { get; set; }
     }
 }

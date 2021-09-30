@@ -14,7 +14,7 @@ namespace PetClinic.Application.Pets.Dtos
         public string MiddleName { get; set; }
         public string Email { get; set; }
         public int UserType { get; set; }
-        public int Active { get; set; }
+        public bool Active { get; set; }
 
     }
 }  

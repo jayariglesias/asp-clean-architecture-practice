@@ -2,9 +2,9 @@
 
 namespace PetClinic.Application.Auth.Dtos
 {
-    public class loginDto
+    public class LoginDto
     {
-        public loginDto(User user, string token)
+        public LoginDto(User user, string token)
         {
             Token = token;
             CurrentUser = new currentUser(user);
@@ -22,13 +22,20 @@ namespace PetClinic.Application.Auth.Dtos
             FirstName = user.FirstName;
             LastName = user.LastName;
             Username = user.Username;
+            Password = user.Password;
             UserType = user.UserType;
+            Email = user.Email;
+            Active = user.Active;
         }
 
         public int UserId { get; set; }
         public int UserType { get; set; }
-        public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public bool Active { get; set; }
     }
 }

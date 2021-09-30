@@ -19,7 +19,7 @@ namespace PetClinic.Infrastructure.Persistence.Context
                     Username = "admin",
                     Password = "1234",
                     UserType = 1,
-                    Active = 1,
+                    Active = true,
                 });
             }
             await context.SaveChangesAsync();
