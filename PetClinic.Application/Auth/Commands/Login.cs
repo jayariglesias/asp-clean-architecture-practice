@@ -42,10 +42,10 @@ namespace PetClinic.Application.Auth.Commands
             }
             else
             {
-                var token = await _token.Create(data, 60);
+                var token = await _token.Create(data, 3600);
                 if(token != null)
                 {
-                    var credentials = new loginDto(data, token); ;
+                    var credentials = new LoginDto(data, token); ;
                     return await Task.FromResult(new Response<object>(credentials, Message.Success()));
                 }
                 return await Task.FromResult(new Response<object>(Message.Custom("Failed! Can`t Generate a Token.")));
