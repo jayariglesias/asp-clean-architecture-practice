@@ -18,6 +18,7 @@ namespace PetClinic.Infrastructure
             services.AddDbContext<DataContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(DataContext).Assembly.FullName)
+                //builder => builder.MigrationsAssembly("PetClinic.Api")
             ));
 
             services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
