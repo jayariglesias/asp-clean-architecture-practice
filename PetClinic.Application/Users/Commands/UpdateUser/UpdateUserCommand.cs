@@ -51,6 +51,7 @@ namespace PetClinic.Application.Users.Commands.UpdateUser
             }
             else
             {
+                data.FirstName = request.FirstName ?? data.FirstName;
                 data.LastName = request.LastName ?? data.LastName;
                 data.MiddleName = request.MiddleName ?? data.MiddleName;
                 data.Email = request.Email ?? data.Email;

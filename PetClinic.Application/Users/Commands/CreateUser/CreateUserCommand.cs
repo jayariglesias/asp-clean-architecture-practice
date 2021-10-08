@@ -17,6 +17,7 @@ namespace PetClinic.Application.Users.Commands.CreateUser
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public bool Active { get; set; }
     }
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Response<object>>
@@ -37,7 +38,8 @@ namespace PetClinic.Application.Users.Commands.CreateUser
                 MiddleName = request.MiddleName,
                 Email = request.Email,
                 Username = request.Username,
-                Password = request.Password
+                Password = request.Password,
+                Active = request.Active
             };
 
             await _context.Users.AddAsync(data);
