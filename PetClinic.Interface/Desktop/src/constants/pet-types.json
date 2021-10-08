@@ -1,0 +1,14 @@
+[
+	{
+		"petType": 1,
+		"petTypeAlias": "Dog"
+	},
+	{
+		"petType": 2,
+		"petTypeAlias": "Cat"
+	},
+	{
+		"petType": 3,
+		"petTypeAlias": "Others"
+	}
+]

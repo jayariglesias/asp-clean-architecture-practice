@@ -1,0 +1,14 @@
+[
+	{
+		"visitType": 1,
+		"visitTypeAlias": "Check Up"
+	},
+	{
+		"visitType": 2,
+		"visitTypeAlias": "Haircut"
+	},
+	{
+		"visitType": 3,
+		"visitTypeAlias": "Others"
+	}
+]
