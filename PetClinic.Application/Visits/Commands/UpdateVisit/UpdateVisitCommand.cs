@@ -14,6 +14,7 @@ namespace PetClinic.Application.Visits.Commands.UpdateVisit
         public int PetId { get; set; }
         public string Notes { get; set; }
         public int VisitType { get; set; }
+        public DateTime VisitDate { get; set; }
     }
 
     public class UpdateVisitCommandHandler : IRequestHandler<UpdateVisitCommand, Response<object>>
@@ -35,6 +36,7 @@ namespace PetClinic.Application.Visits.Commands.UpdateVisit
             else
             {
                 data.VisitType = request.VisitType.ToString() != string.Empty ? request.VisitType : data.VisitType;
+                data.VisitDate = request.VisitDate != DateTime.MinValue ? request.VisitDate: data.VisitDate;
                 data.Notes = request.Notes ?? data.Notes;
                 
                 await _context.SaveChangesAsync(cancellationToken);
