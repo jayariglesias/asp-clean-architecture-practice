@@ -32,8 +32,8 @@
           <td>Returns users data by its first name, lastname or both.</td>
           <td>
              {
-                 "firstname": "Jayar",
-                 "lastname": "Iglesias"
+                 "firstname": string,
+                 "lastname": string
               }
            </td>
         </tr>
@@ -43,12 +43,12 @@
           <td>Allows to create a user.</td>
           <td>
              {
-                "firstname": "Jayar",
-                "lastname": "Iglesias",
-                "middlename": "Acabado",
-                "email": "jiglesias@email.com",
-                "username": "juser",
-                "password": "jpass",
+                "firstname": string,
+                "lastname": string,
+                "middlename": string,
+                "email": string,
+                "username": string,
+                "password": string,
               }
            </td>
         </tr>
@@ -58,13 +58,13 @@
           <td>Allows to modify user data.</td>
           <td>
              {
-                "userid": 1,
-                "firstname": "Jayar",
-                "lastname": "Iglesias",
-                "middlename": "Acabado",
-                "email": "jiglesias@email.com",
-                "username": "juser",
-                "password": "jpass",
+                "userid": number,
+                "firstname": string,
+                "lastname": string,
+                "middlename": string,
+                "email": string,
+                "username": string,
+                "password": string,
               }
            </td>
         </tr>
@@ -74,8 +74,8 @@
           <td>Allows to delete user.</td>
           <td>
              {
-                "userid": 1
-              }
+                "userid": number
+             }
            </td>
         </tr>
     </tbody>
@@ -112,7 +112,7 @@
           <td>Returns pets data by its name.</td>
           <td>
              {
-                 "petname": "black",
+                 "petname": string,
               }
            </td>
         </tr>
@@ -122,11 +122,11 @@
           <td>Allows to create a pet.</td>
           <td>
               { 
-                  "userid" : 1,
-                  "pettype" : 1,
-                  "petname" : "Black",
-                  "breed" : "Wolf",
-                  "birthdate" : "2021-08-08"
+                  "userid" : number,
+                  "pettype" : number,
+                  "petname" : string,
+                  "breed" : string,
+                  "birthdate" : date
               }
            </td>
         </tr>
@@ -136,11 +136,11 @@
           <td>Allows to modify pet data.</td>
           <td>
               { 
-                  "petid" : 1,
-                  "pettype" : 1,
-                  "petname" : "Black",
-                  "breed" : "Wolf",
-                  "birthdate" : "2021-08-08"
+                  "petid" : number,
+                  "pettype" : number,
+                  "petname" : string,
+                  "breed" : string,
+                  "birthdate" : date
               }
            </td>
         </tr>
@@ -150,7 +150,7 @@
           <td>Allows to delete pet data.</td>
           <td>
              {
-                "petid": 1
+                "petid": number
               }
            </td>
         </tr>
@@ -188,15 +188,15 @@
           <td>Returns visits data by its last name, first name, pet name, pet type, visit type, visit from, visit to, or all of them.
           <td>
              {
-                 "petname": "black",
-                 "visitid": 1,
-                 "petid": 1,
-                 "visittype": 1,
+                 "petname": string,
+                 "visitid": number,
+                 "petid": number,
+                 "visittype": number,
                  "visitfrom": date,
                  "visitto": date,
-                 "firstname": "owner",
-                 "middlename": "owner",
-                 "lastname": "owner"
+                 "firstname": string,
+                 "middlename": string,
+                 "lastname": string
               }
               </br></br>
               For range between dates, use this
@@ -213,10 +213,10 @@
           <td>Allows to create a visit.</td>
           <td>
               {
-                  "petid" : 1,
-                  "notes" : "okay, good, awesome",
-                  "visittype" : 1,
-                  "visitdate": "2021-05-05"
+                  "petid" : number,
+                  "notes" : string,
+                  "visittype" : number,
+                  "visitdate": date
               }
            </td>
         </tr>
@@ -226,9 +226,9 @@
           <td>Allows to modify visit data.</td>
           <td>
                 {
-                    "petid" : 1,
-                    "notes" : "new notes",
-                    "visittype" : 1
+                    "petid" : number,
+                    "notes" : string,
+                    "visittype" : number
                 }
            </td>
         </tr>
@@ -238,7 +238,7 @@
           <td>Allows to delete visit data.</td>
           <td>
              {
-                "visitid": 1
+                "visitid": number
               }
            </td>
         </tr>
